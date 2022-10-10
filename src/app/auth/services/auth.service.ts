@@ -1,7 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { BehaviorSubject, filter, map, Observable } from "rxjs";
 import { environment } from "../../../environments/environment";
+import { SocketService } from "../../shared/services/socket.service";
 import { CurrentUserInterface } from "../types/currentUser.interface";
 import { LoginRequestInterface } from "../types/loginRequest.interface";
 import { RegisterRequestInterface } from "../types/registerRequest.interface";
@@ -12,8 +13,15 @@ export class AuthService {
   currentUser$ = new BehaviorSubject<CurrentUserInterface | null | undefined>(
     undefined,
   );
+  isLogged$ = this.currentUser$.pipe(
+    // Выбрасываем из пайма undefined-значения. Оставляем только Object | null
+    filter(user => user !== undefined),
+    // Преобразуем в поток true/false значений
+    // map(user => Boolean(user)),
+    map(Boolean), // Более короткая запись
+  );
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private socketService: SocketService) {
   }
 
   register(registerRequest: RegisterRequestInterface): Observable<CurrentUserInterface> {
@@ -37,6 +45,12 @@ export class AuthService {
 
   setCurrentUser(user: CurrentUserInterface | null): void {
     this.currentUser$.next(user);
+  }
+
+  logout(): void {
+    localStorage.removeItem("token");
+    this.currentUser$.next(null);
+    this.socketService.disconnect();
   }
 }
 

@@ -2,6 +2,7 @@ import { HttpErrorResponse } from "@angular/common/http";
 import { Component } from "@angular/core";
 import { FormBuilder, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
+import { SocketService } from "../../../shared/services/socket.service";
 import { AuthService } from "../../services/auth.service";
 import { LoginRequestInterface } from "../../types/loginRequest.interface";
 
@@ -21,6 +22,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private socketService: SocketService,
   ) {
   }
 
@@ -33,6 +35,7 @@ export class LoginComponent {
       next: (loginedUser) => {
         console.log("currentUser", loginedUser);
         this.authService.setToken(loginedUser);
+        this.socketService.setupSocketConnection(loginedUser);
         this.authService.setCurrentUser(loginedUser);
         this.errorMessage = null;
         this.router.navigateByUrl("/").then(() => {

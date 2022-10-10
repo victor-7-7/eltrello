@@ -5,6 +5,7 @@ import { RouterModule, Routes } from "@angular/router";
 import { LoginComponent } from "./components/login/login.component";
 import { RegisterComponent } from "./components/register/register.component";
 import { AuthService } from "./services/auth.service";
+import { AuthGuardService } from "./services/authGuard.service";
 
 const routes: Routes = [
   {
@@ -14,12 +15,13 @@ const routes: Routes = [
   {
     path: "login",
     component: LoginComponent,
+    // canActivate: [AuthGuardService],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes), ReactiveFormsModule, CommonModule],
-  providers: [AuthService],
+  providers: [AuthService, AuthGuardService],
   declarations: [RegisterComponent, LoginComponent],
 })
 export class AuthModule {

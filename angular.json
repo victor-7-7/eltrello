@@ -106,5 +106,6 @@
   },
   "cli": {
     "analytics": "b8a3e7fa-56cb-46b1-b3a1-5d2bb44cb256"
-  }
+  },
+  "defaultProject": "eltrello"
 }
