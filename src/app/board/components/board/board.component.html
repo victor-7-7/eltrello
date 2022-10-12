@@ -1,2 +1,34 @@
-Board
-{{board$ | async | json}}
+<!--{{board$ | async | json}}-->
+<!--<button (click)="test()">Test</button>-->
+<app-topbar></app-topbar>
+
+<div class="board" *ngIf="data$ | async as data">
+  <div class="board-header-container">INLINE FORM BOARD</div>
+  <div class="columns">
+    <div class="column" *ngFor="let column of data.columns">
+      <div class="column-title">{{ column.title }}</div>
+      <div
+        *ngFor="let task of getTasksByColumn(column.id, data.tasks)"
+        class="task"
+      >
+        {{ task.title }}
+      </div>
+      <inline-form
+        class="create-task-form"
+        defaultText="Add a card"
+        [hasButton]="true"
+        buttonText="Add card"
+        inputPlaceholder="Enter a title for this card"
+        (handleSubmit)="createTask($event, column.id)"
+      ></inline-form>
+    </div>
+    <inline-form
+      class="create-column-form"
+      defaultText="Add a list"
+      [hasButton]="true"
+      buttonText="Add list"
+      inputPlaceholder="Add column name"
+      (handleSubmit)="createColumn($event)"
+    ></inline-form>
+  </div>
+</div>
