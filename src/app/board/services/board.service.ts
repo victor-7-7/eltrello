@@ -41,6 +41,33 @@ export class BoardService {
     const updatedTasks = [...this.tasks$.getValue(), task];
     this.tasks$.next(updatedTasks);
   }
+
+  updateBoard(updatedBoard: BoardInterface): void {
+    const board = this.board$.getValue();
+    if (!board) {
+      throw new Error('Board is not initialized');
+    }
+    // { ...board, title: updatedBoard.title } - это синтаксис обновления
+    // объекта board по полю title. Так называемое слияние.
+    this.board$.next({ ...board, title: updatedBoard.title });
+  }
+
+  updateColumn(updatedColumn: ColumnInterface): void {
+    const updatedColumns = this.columns$.getValue().map((column) => {
+      if (column.id === updatedColumn.id) {
+        return { ...column, title: updatedColumn.title };
+      }
+      return column;
+    });
+    this.columns$.next(updatedColumns);
+  }
+
+  deleteColumn(columnId: string): void {
+    const updatedColumns = this.columns$
+      .getValue()
+      .filter((column) => column.id !== columnId);
+    this.columns$.next(updatedColumns);
+  }
 }
 
 

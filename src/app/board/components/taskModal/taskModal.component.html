@@ -1,0 +1,29 @@
+<div class="task-modal-container">
+  <div class="task-modal-header">
+    TASK TITLE INLINE FORM
+    <img
+      src="/assets/close_icon.svg"
+      class="task-modal-close"
+      (click)="goToBoard()"
+    />
+  </div>
+  <div class="task-modal-body">
+    <div>
+      <form class="column-select-container">SELECT COLUMN</form>
+      <div class="task-modal-description">
+        <div class="task-modal-description-label">Description</div>
+        INLINE FORM DESCRIPTION
+      </div>
+    </div>
+    <div class="task-modal-actions">
+      <div class="task-modal-actions-label">Actions</div>
+      <div>
+        <div class="task-modal-actions-action">
+          <img src="/assets/trash.svg" class="task-modal-actions-icon" />
+          Delete
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="task-modal-backdrop"></div>
